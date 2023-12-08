@@ -1,76 +1,61 @@
+// Write your code here
 import {Component} from 'react'
 import './index.css'
 
-class Review extends Component {
+class ReviewsCarousel extends Component {
   state = {reviewId: 0}
 
-  onPrevious = () => {
-    this.setState(prevState => ({
-      reviewId: prevState.reviewId > 0 ? prevState.reviewId - 1 : 0,
-    }))
+  onDecrease = () => {
+    const {reviewId} = this.state
+    if (reviewId > 0) {
+      this.setState(prevState => ({
+        reviewId: prevState.reviewId - 1,
+      }))
+    }
   }
 
-  onNext = () => {
-    this.setState(prevState => ({
-      reviewId: prevState.reviewId < 3 ? prevState.reviewId + 1 : 3,
-    }))
+  onIncrease = () => {
+    const {reviewsList} = this.props
+    const {reviewId} = this.state
+    if (reviewId < reviewsList.length - 1) {
+      this.setState(prevState => ({
+        reviewId: prevState.reviewId + 1,
+      }))
+    }
   }
 
   render() {
-    const {reviewId} = this.state
     const {reviewsList} = this.props
-    const selectedList = reviewsList[reviewId]
+    const {reviewId} = this.state
+
+    const {imgUrl, username, companyName, description} = reviewsList[reviewId]
 
     return (
-      <div className="container">
-        <button
-          type="button"
-          className="button"
-          onClick={this.onPrevious}
-          value="leftArrow"
-        >
+      <div className="app-container">
+        <h1 className="heading">Reviews</h1>
+        <div className="reviews-container">
           <img
-            src="https://assets.ccbp.in/frontend/react-js/left-arrow-img.png"
+            src="https://assets.ccbp.in/frontend/react-js/left-arrow-img.png "
             alt="left arrow"
-            className="arrow"
+            className="left-arrow"
+            onClick={this.onDecrease}
           />
-        </button>
-        <div className="details-container">
-          <h1 className="heading">Reviews</h1>
+          <div className="reviews">
+            <img src={imgUrl} alt="" className="" />
+            <p className="name">{username}</p>
+            <p className="company-name">{companyName}</p>
+            <p className="description">{description}</p>
+          </div>
           <img
-            src={selectedList.imgUrl}
-            alt={selectedList.username}
-            className="profile-img"
-          />
-
-          <ul className="profile-details">
-            <li>
-              <p className="username">{selectedList.username}</p>
-            </li>
-            <li>
-              <p className="company-name">{selectedList.companyName}</p>
-            </li>
-            <li>
-              <p className="profile-description">{selectedList.description}</p>
-            </li>
-          </ul>
-        </div>
-
-        <button
-          type="button"
-          className="button"
-          onClick={this.onNext}
-          value="rightArrow"
-        >
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/right-arrow-img.png"
+            src="https://assets.ccbp.in/frontend/react-js/right-arrow-img.png "
             alt="right arrow"
-            className="arrow"
+            className="right-arrow"
+            onClick={this.onIncrease}
           />
-        </button>
+        </div>
       </div>
     )
   }
 }
 
-export default Review
+export default ReviewsCarousel
